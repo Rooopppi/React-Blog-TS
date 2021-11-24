@@ -31,13 +31,13 @@ const deletePost = (postId: string) => {
   return axios.delete(`/posts/${postId}`);
 };
 
-const editPost = (
-  postId: string,
-  title: string,
-  description: string,
-  fullText: string
-) => {
-  return axios.patch(`/posts/${postId}`, {
+const editPost = ({
+  _id,
+  title,
+  description,
+  fullText,
+}: Pick<PostData, "_id" | "title" | "description" | "fullText">) => {
+  return axios.patch(`/posts/${_id}`, {
     title,
     description,
     fullText,

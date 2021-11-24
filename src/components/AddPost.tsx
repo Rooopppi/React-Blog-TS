@@ -11,15 +11,17 @@ import Title from "../style/Title.styled";
 import PostData from "../interfaces/post.type";
 
 interface Props {
-  postId?: string;
+  _id?: string;
   setPostData?: (postData: PostData) => void;
   setAllPosts?: (allPosts: PostData[]) => void;
-  editPost?: (
-    postId: string,
-    title: string,
-    description: string,
-    fullText: string
-  ) => Promise<AxiosResponse<unknown, any>>;
+  editPost?: ({
+    _id,
+    title,
+    description,
+    fullText,
+  }: Pick<PostData, "_id" | "title" | "description" | "fullText">) => Promise<
+    AxiosResponse<unknown, any>
+  >;
   addPost?: (
     title: string,
     description: string,
@@ -42,29 +44,21 @@ const addPostSchema = Yup.object().shape({
     .required("Required"),
 });
 
-function AddPost({
-  postId,
-  setPostData,
-  setAllPosts,
-  editPost,
-  addPost,
-}: Props) {
+function AddPost({ _id, setPostData, setAllPosts, editPost, addPost }: Props) {
   const handleAddPost = (
     values: { title: string; description: string; fullText: string },
     { resetForm }: any
   ) => {
-    if (editPost && postId) {
-      editPost(postId, values.title, values.description, values.fullText).then(
-        () => {
-          if (!setPostData) {
-            return;
-          }
-          PostService.getSinglePost(postId).then((res) => {
-            setPostData(res.data);
-          });
-          resetForm();
+    if (editPost && _id) {
+      editPost({ _id, ...values }).then(() => {
+        if (!setPostData) {
+          return;
         }
-      );
+        PostService.getSinglePost(_id).then((res) => {
+          setPostData(res.data);
+        });
+        resetForm();
+      });
     } else if (addPost) {
       addPost(values.title, values.description, values.fullText).then(() => {
         getAllPostsOrdered().then(setAllPosts);
@@ -76,7 +70,7 @@ function AddPost({
   return (
     <div>
       <div>
-        {postId && <Title>Add your post</Title>}
+        {_id && <Title>Add your post</Title>}
         <Formik
           initialValues={{
             title: "",

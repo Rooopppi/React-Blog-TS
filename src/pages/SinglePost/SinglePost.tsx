@@ -24,7 +24,7 @@ import {
 } from "../../components/Post/Post.styled";
 import NotLoggedMessage from "../../style/NotLoggedMessage.styled";
 
-function SinglePost(props: { params: { post_id: string } }) {
+function SinglePost(props: { match: { params: { post_id: string } } }) {
   const [postData, setPostData] = useState<PostData | null>(null);
   const [allComments, setAllComments] = useState<Array<CommentData>>([]);
   const [showEdit, setShowEdit] = useState(false);
@@ -35,7 +35,9 @@ function SinglePost(props: { params: { post_id: string } }) {
   const { isLoggedIn } = useAppSelector((state) => state.auth);
   const fileInput = useRef<HTMLInputElement>(null);
   const {
-    params: { post_id },
+    match: {
+      params: { post_id },
+    },
   } = props;
 
   useEffect(() => {
@@ -154,7 +156,7 @@ function SinglePost(props: { params: { post_id: string } }) {
               </Button>
             </form>
             <AddPost
-              postId={postData._id}
+              _id={postData._id}
               editPost={PostService.editPost}
               setPostData={setPostData}
             />
