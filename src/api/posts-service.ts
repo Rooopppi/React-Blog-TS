@@ -1,4 +1,4 @@
-import PostData from "../interfaces/post.type";
+import { PostData, EditPostData } from "../interfaces/post.type";
 import axios from "./inst";
 
 interface AllPosts {
@@ -31,12 +31,7 @@ const deletePost = (postId: string) => {
   return axios.delete(`/posts/${postId}`);
 };
 
-const editPost = ({
-  _id,
-  title,
-  description,
-  fullText,
-}: Pick<PostData, "_id" | "title" | "description" | "fullText">) => {
+const editPost = ({ _id, title, description, fullText }: EditPostData) => {
   return axios.patch(`/posts/${_id}`, {
     title,
     description,

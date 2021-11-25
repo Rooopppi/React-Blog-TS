@@ -3,7 +3,7 @@ import styled from "styled-components";
 const TextArea = styled.textarea<{ backgroundDark?: string }>`
   background-color: ${(props) =>
     props.backgroundDark ? "#0d1117" : "#161b22"};
-  color: #c9d1d9;
+  color: ${(props) => props.theme.fontColor};
   border: none;
   width: 100%;
   padding: 10px;

@@ -13,7 +13,7 @@ const Warn = styled.div`
   &:before {
     content: "";
     position: absolute;
-    bottom: 22px;
+    bottom: 21px;
     left: 19px;
     border: 10px solid transparent;
     border-bottom: 10px solid red;

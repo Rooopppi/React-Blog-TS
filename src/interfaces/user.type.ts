@@ -12,10 +12,7 @@ export interface UserData {
   dateCreated: string;
 }
 
-export interface EditUserData {
-  name: string;
-  extra_details: string;
-  skills: string;
-  profession: string;
-  details: string;
-}
+export type EditUserData = Pick<
+  UserData,
+  "name" | "extra_details" | "skills" | "profession" | "details"
+>;

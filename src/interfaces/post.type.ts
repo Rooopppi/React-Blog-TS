@@ -1,4 +1,4 @@
-export default interface PostData {
+export interface PostData {
   _id: string;
   image: string;
   fullText: string;
@@ -8,3 +8,8 @@ export default interface PostData {
   postedBy: string;
   likes: string[];
 }
+
+export type EditPostData = Pick<
+  PostData,
+  "_id" | "title" | "description" | "fullText"
+>;

@@ -4,7 +4,7 @@
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import { useHistory } from "react-router-dom";
 import { useAppSelector } from "components/App/hooks";
-import PostData from "interfaces/post.type";
+import { PostData } from "interfaces/post.type";
 import CommentData from "interfaces/comment.type";
 import PostService from "../../api/posts-service";
 import CommentService from "../../api/comment-service";
@@ -155,11 +155,7 @@ function SinglePost(props: { match: { params: { post_id: string } } }) {
                 Submit
               </Button>
             </form>
-            <AddPost
-              _id={postData._id}
-              editPost={PostService.editPost}
-              setPostData={setPostData}
-            />
+            <AddPost _id={postData._id} setPostData={setPostData} />
           </div>
         )}
         <div>
@@ -181,7 +177,6 @@ function SinglePost(props: { match: { params: { post_id: string } } }) {
             followedCommentID={post_id}
             postId={post_id}
             setAllComments={setAllComments}
-            addComment={CommentService.addComment}
           />
         ) : (
           <NotLoggedMessage>Please log in to leave a post</NotLoggedMessage>

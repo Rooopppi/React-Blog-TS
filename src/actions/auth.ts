@@ -5,7 +5,7 @@ import { setToStorage } from "../utils/global";
 import AuthService from "../api/auth-service";
 
 interface Auth {
-  type: string;
+  type: ActionTypes;
   payload?: UserData | { token: string };
 }
 
@@ -57,7 +57,7 @@ export const getUser = () => (dispatch: Dispatch<Auth>) => {
         "userData",
         JSON.stringify({
           // eslint-disable-next-line no-underscore-dangle
-          id: response.data._id,
+          _id: response.data._id,
           name: response.data.name,
           email: response.data.email,
         })

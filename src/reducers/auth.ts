@@ -5,7 +5,7 @@ interface IninitialState extends UserData {
   isLoggedIn: boolean;
 }
 
-type Action<T> = { type: string; payload: T };
+type Action<T> = { type: ActionTypes; payload: T };
 
 const token = localStorage.getItem("token");
 const userData = localStorage.getItem("userData");

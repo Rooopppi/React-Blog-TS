@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CommentStyled = styled.div`
   background-color: ${(props) => props.theme.comment};
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 15px 15px 8px 15px;
   border-radius: 20px;
   .comment-text {
@@ -27,4 +27,5 @@ export const CommentStyled = styled.div`
 
 export const ReplyComment = styled.div`
   margin-left: 50px;
+  margin-top: 10px;
 `;

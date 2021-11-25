@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import ReactPaginate from "react-paginate";
 import Post from "../Post/Post";
 import PaginationStyled from "./PaginatedPosts.styled";
-import PostData from "../../interfaces/post.type";
+import { PostData } from "../../interfaces/post.type";
 
 interface Props {
   allPosts: PostData[];

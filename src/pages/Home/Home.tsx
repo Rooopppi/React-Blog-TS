@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
-import PostData from "interfaces/post.type";
+import { PostData } from "interfaces/post.type";
 import { useAppSelector } from "../../components/App/hooks";
 import PaginatedPosts from "../../components/PaginatedPosts/PaginatedPosts";
-import PostService from "../../api/posts-service";
 import AddPost from "../../components/AddPost";
 import getAllPostsOrdered from "../../utils/getAllPostsOrdered";
 import Button from "../../style/Button.styled";
@@ -70,7 +69,7 @@ function Home() {
         </Operations>
         <PaginatedPosts allPosts={allPosts} search={search} sortKey={sortKey} />
         {isLoggedIn ? (
-          <AddPost addPost={PostService.addPost} setAllPosts={setAllPosts} />
+          <AddPost setAllPosts={setAllPosts} />
         ) : (
           <NotLoggedMessage>Please log in to leave a post</NotLoggedMessage>
         )}

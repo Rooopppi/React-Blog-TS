@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { PostDate, PostDescr, PostMeta } from "./Post.styled";
 import PostStyled from "../../style/Post.styled";
 import Title from "../../style/Title.styled";
-import PostData from "../../interfaces/post.type";
+import { PostData } from "../../interfaces/post.type";
 
 function Post({
   _id,

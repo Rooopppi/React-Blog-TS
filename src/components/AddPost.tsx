@@ -1,6 +1,5 @@
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { AxiosResponse } from "axios";
 import PostService from "../api/posts-service";
 import CustomInputComponent from "./CustomInputComponent/CustomInputComponent";
 import CustomTextArea from "./CustomTextArea";
@@ -8,25 +7,18 @@ import getAllPostsOrdered from "../utils/getAllPostsOrdered";
 import Button from "../style/Button.styled";
 import InputWrapper from "../style/InputWrapper.styled";
 import Title from "../style/Title.styled";
-import PostData from "../interfaces/post.type";
+import { PostData } from "../interfaces/post.type";
 
 interface Props {
   _id?: string;
   setPostData?: (postData: PostData) => void;
   setAllPosts?: (allPosts: PostData[]) => void;
-  editPost?: ({
-    _id,
-    title,
-    description,
-    fullText,
-  }: Pick<PostData, "_id" | "title" | "description" | "fullText">) => Promise<
-    AxiosResponse<unknown, any>
-  >;
-  addPost?: (
-    title: string,
-    description: string,
-    fullText: string
-  ) => Promise<AxiosResponse<unknown, any>>;
+}
+
+interface FormValues {
+  title: string;
+  description: string;
+  fullText: string;
 }
 
 const addPostSchema = Yup.object().shape({
@@ -44,27 +36,27 @@ const addPostSchema = Yup.object().shape({
     .required("Required"),
 });
 
-function AddPost({ _id, setPostData, setAllPosts, editPost, addPost }: Props) {
-  const handleAddPost = (
-    values: { title: string; description: string; fullText: string },
-    { resetForm }: any
-  ) => {
-    if (editPost && _id) {
-      editPost({ _id, ...values }).then(() => {
-        if (!setPostData) {
-          return;
-        }
-        PostService.getSinglePost(_id).then((res) => {
-          setPostData(res.data);
-        });
-        resetForm();
-      });
-    } else if (addPost) {
-      addPost(values.title, values.description, values.fullText).then(() => {
-        getAllPostsOrdered().then(setAllPosts);
-        resetForm();
-      });
+function AddPost({ _id, setPostData, setAllPosts }: Props) {
+  const initialValues: FormValues = {
+    title: "",
+    description: "",
+    fullText: "",
+  };
+
+  const handleOnSubmit = async (values: FormValues, { resetForm }: any) => {
+    if (_id) {
+      await PostService.editPost({ _id, ...values });
+      const { data: post } = await PostService.getSinglePost(_id);
+      setPostData!(post);
+    } else {
+      await PostService.addPost(
+        values.title,
+        values.description,
+        values.fullText
+      );
+      getAllPostsOrdered().then(setAllPosts);
     }
+    resetForm();
   };
 
   return (
@@ -72,13 +64,9 @@ function AddPost({ _id, setPostData, setAllPosts, editPost, addPost }: Props) {
       <div>
         {_id && <Title>Add your post</Title>}
         <Formik
-          initialValues={{
-            title: "",
-            description: "",
-            fullText: "",
-          }}
+          initialValues={initialValues}
           validationSchema={addPostSchema}
-          onSubmit={handleAddPost}
+          onSubmit={handleOnSubmit}
         >
           {() => (
             <Form className="addPost-form">

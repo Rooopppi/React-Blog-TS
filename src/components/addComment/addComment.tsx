@@ -1,7 +1,6 @@
 /* eslint-disable react/require-default-props */
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
-import { AxiosResponse } from "axios";
 import CommentService from "../../api/comment-service";
 import CustomTextArea from "../CustomTextArea";
 import Button from "../../style/Button.styled";
@@ -15,15 +14,6 @@ interface Props {
   setAllComments: (commentData: CommentData[]) => void;
   setShowReply?: (showReply: boolean) => void;
   setShowEdit?: (showEdit: boolean) => void;
-  editComment?: (
-    commentId: string,
-    text: string
-  ) => Promise<AxiosResponse<unknown, any>>;
-  addComment?: (
-    postId: string,
-    text: string,
-    followedCommentID: string
-  ) => Promise<AxiosResponse<unknown, any>>;
   commentId?: string;
   backgroundDark?: string;
 }
@@ -45,33 +35,25 @@ function AddComment({
   setAllComments,
   setShowReply,
   setShowEdit,
-  addComment,
-  editComment,
   commentId,
   backgroundDark,
 }: Props) {
   const initialValues: FormValues = { text: "" };
 
-  const handleOnSubmit = (values: FormValues, resetForm: any) => {
-    if (commentId && setShowEdit && editComment) {
-      editComment(commentId, values.text).then(() => {
-        CommentService.getAllComments(postId).then((res) => {
-          setAllComments(res.data);
-        });
-        resetForm();
-        setShowEdit(false);
-      });
-    } else if (addComment && followedCommentID) {
-      addComment(postId, values.text, followedCommentID).then(() => {
-        CommentService.getAllComments(postId).then((res) => {
-          setAllComments(res.data);
-        });
-        resetForm();
-        if (setShowReply) {
-          setShowReply(false);
-        }
-      });
+  const handleOnSubmit = async (values: FormValues, { resetForm }: any) => {
+    if (commentId) {
+      await CommentService.editComment(commentId, values.text);
+      setShowEdit!(false);
+    } else {
+      await CommentService.addComment(postId, values.text, followedCommentID!);
+      if (setShowReply) {
+        setShowReply(false);
+      }
     }
+    const { data: comments } = await CommentService.getAllComments(postId);
+    setAllComments(comments);
+
+    resetForm();
   };
 
   return (

@@ -53,7 +53,7 @@ function Profile() {
         <UserData>
           <UserInfo>
             <tbody>
-              {avatar && (
+              {avatar ? (
                 <UserAvatar>
                   <td>
                     <img
@@ -62,8 +62,7 @@ function Profile() {
                     />
                   </td>
                 </UserAvatar>
-              )}
-
+              ) : null}
               <tr>
                 <th>Username:</th>
                 <td>{name}</td>

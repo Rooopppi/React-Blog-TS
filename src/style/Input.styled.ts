@@ -7,7 +7,7 @@ const Input = styled.input<{ backgroundDark?: string; marginRight?: string }>`
   border: none;
   border-radius: 20px;
   width: 100%;
-  color: #c9d1d9;
+  color: ${(props) => props.theme.fontColor};
   margin-right: ${(props) => props.marginRight || "0"};
 `;
 

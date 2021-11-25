@@ -68,7 +68,6 @@ function Comments({
         <AddComment
           setShowEdit={setShowEdit}
           postId={postID}
-          editComment={CommentService.editComment}
           commentId={_id}
           setAllComments={setAllComments}
         />
@@ -131,7 +130,6 @@ function Comments({
               postId={postID}
               setAllComments={setAllComments}
               setShowReply={setShowReply}
-              addComment={CommentService.addComment}
               backgroundDark="backgroundDark"
             />
           )}
